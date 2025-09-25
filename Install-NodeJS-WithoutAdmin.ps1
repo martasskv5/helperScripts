@@ -16,7 +16,7 @@ Remove-Item "$targetPath\nodejs.zip"
 
 # Add to PATH
 $userEnvPath = [Environment]::GetEnvironmentVariable("Path", "User")
-$newPath = "$targetPath;" + $userEnvPath
+$newPath = "$targetPath\node-v22.19.0-win-x64;" + $userEnvPath
 [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
 
 # Verify installation
