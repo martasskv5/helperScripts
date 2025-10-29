@@ -16,9 +16,11 @@ Remove-Item "$targetPath\nodejs.zip"
 
 # Add to PATH
 $userEnvPath = [Environment]::GetEnvironmentVariable("Path", "User")
-$newPath = "$targetPath\node-v22.19.0-win-x64;" + $userEnvPath
+$newPath = "$targetPath;" + $userEnvPath
 [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
 
 # Verify installation
 Write-Host "Node.js installed successfully!"
-node --version
+    
+# Open a new PowerShell session to use the updated PATH
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "node --version" 
