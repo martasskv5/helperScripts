@@ -1,4 +1,4 @@
-# Install-Module DisplayConfig -Scope CurrentUser -Force
+Install-Module DisplayConfig -Scope CurrentUser -Force
 Import-Module DisplayConfig
 
 $monitors = Get-DisplayInfo
