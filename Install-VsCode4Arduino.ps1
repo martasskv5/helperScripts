@@ -86,11 +86,22 @@ function Install-VsCode4Arduino {
     # Install PlatformIO extension for VS Code
     Write-Host "Installing PlatformIO extension for Visual Studio Code..."
     try {
-        code --install-extension platformio.platformio-ide
-        Write-Host "PlatformIO extension installed successfully!" -ForegroundColor Green
+        # Try resolving the 'code' CLI. Prefer the CLI wrapper (code.cmd) to ensure arguments are passed.
+        $codeCmd = $env:LOCALAPPDATA + "\Programs\Microsoft VS Code\bin\code.cmd"
+        $cmdInfo = Get-Command code -ErrorAction SilentlyContinue
+        if ($cmdInfo) { $codeCmd = $cmdInfo.Source }
+
+        if (-not $codeCmd) {
+            Write-Host "VS Code CLI 'code' not found on PATH. Skipping extension installation." -ForegroundColor Yellow
+        }
+        else {
+            # Use Start-Process with explicit ArgumentList so parameters aren't treated as part of a file path
+            Start-Process -FilePath $codeCmd -ArgumentList @('--install-extension','platformio.platformio-ide') -Wait -NoNewWindow
+            Write-Host "PlatformIO extension installed successfully!" -ForegroundColor Green
+        }
     }
     catch {
-        Write-Host "Failed to install PlatformIO extension." -ForegroundColor Red
+        Write-Host "Failed to install PlatformIO extension: $_" -ForegroundColor Red
         return
     }
 }
